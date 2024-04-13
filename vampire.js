@@ -46,7 +46,43 @@ class Vampire {
   // * when comparing Ansel and Sarah, Ansel is the closest common anscestor.
   // * when comparing Ansel and Andrew, Ansel is the closest common anscestor.
   closestCommonAncestor(vampire) {
+    
+  }
 
+  vampireWithName(name) {
+    if (this.name === name) {
+      return this;
+    }
+    for (const offspring of this.offspring) {
+      const found = offspring.vampireWithName(name);
+      if (found) {
+        return found;
+      }
+    }
+    return null;
+  }
+
+  // Returns the total number of vampires that exist
+  get totalDescendents() {
+    let descendents = this.numberOfOffspring; 
+    for (const offspring of this.offspring) {
+      descendents += offspring.totalDescendents;
+    }
+    return descendents;
+  }
+
+  // Returns an array of all the vampires that were converted after 1980
+  get allMillennialVampires() {
+    let millennials = [];
+    
+    if (this.yearConverted >= 1980) {
+      millennials.push(this);
+    }
+    for (let offspring of this.offspring) {
+      const millennialOffspring = offspring.allMillennialVampires;
+      millennials = millennials.concat(millennialOffspring);
+    }
+    return millennials;
   }
 }
 
